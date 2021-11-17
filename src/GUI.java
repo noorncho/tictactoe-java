@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 public class GUI implements ActionListener {
     JFrame frame = new JFrame("Tic Tac Toe");
     JButton[] buttons = new JButton[9];
-    JPanel btnPanel = new JPanel();
+    JPanel btnGridPanel = new JPanel();
     Dialog dialogBox;
 
     Game game = new Game();
@@ -18,18 +18,18 @@ public class GUI implements ActionListener {
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 
         //Initialize Buttons
-        btnPanel.setLayout(new GridLayout(3, 3));
+        btnGridPanel.setLayout(new GridLayout(3, 3));
         for(int i = 0; i < 9; i++){
             buttons[i] = new JButton();
             buttons[i].setText("");
             buttons[i].setFont(new Font("Ink Free", Font.BOLD, 120));
             buttons[i].addActionListener(this);
-            btnPanel.add(buttons[i]);
+            btnGridPanel.add(buttons[i]);
         }
-        frame.add(btnPanel);
+        frame.add(btnGridPanel);
     }
 
-    //@Override
+    @Override
     public void actionPerformed(ActionEvent e) {
         for(int i = 0; i < buttons.length; i++){
             JButton btn = buttons[i];
