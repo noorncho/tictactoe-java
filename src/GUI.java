@@ -2,11 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 public class GUI implements ActionListener {
     JFrame frame = new JFrame("Tic Tac Toe");
     JButton[] buttons = new JButton[9];
     JPanel btnGridPanel = new JPanel();
+    JPanel btnPanel = new JPanel();
+    JButton singlePlayer, restart;
     Dialog dialogBox;
 
     Game game = new Game();
@@ -14,6 +17,7 @@ public class GUI implements ActionListener {
     public GUI() {
         frame.setSize(500, 500);
         frame.setResizable(false);
+        frame.setLayout(new BorderLayout());
         frame.setVisible(true);
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 
@@ -26,7 +30,24 @@ public class GUI implements ActionListener {
             buttons[i].addActionListener(this);
             btnGridPanel.add(buttons[i]);
         }
+
+        //Bottom button panel
+        singlePlayer = new JButton("Single Player");
+        restart = new JButton(new AbstractAction("Restart Game") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for(JButton btn: buttons){
+                    btn.setEnabled(true);
+                    btn.setText("");
+                }
+                Arrays.fill(game.getBoardGrid(), "-");
+            }
+        });
+        btnPanel.add(singlePlayer);
+        btnPanel.add(restart);
+
         frame.add(btnGridPanel);
+        frame.add(btnPanel, BorderLayout.SOUTH);
     }
 
     @Override
