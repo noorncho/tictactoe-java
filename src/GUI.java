@@ -12,7 +12,7 @@ public class GUI implements ActionListener {
     JButton singlePlayer, restart;
     Dialog dialogBox;
 
-    Game game = new Game();
+    Game game = new Game(this);
 
     public GUI() {
         frame.setSize(500, 500);
@@ -32,7 +32,15 @@ public class GUI implements ActionListener {
         }
 
         //Bottom button panel
-        singlePlayer = new JButton("Single Player");
+        singlePlayer = new JButton(new AbstractAction("Single Player") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                game.setSinglePlayer(true);
+                singlePlayer.setBackground(Color.GREEN);
+                setEnabled(false);
+            }
+        });
+
         restart = new JButton(new AbstractAction("Restart Game") {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -40,9 +48,12 @@ public class GUI implements ActionListener {
                     btn.setEnabled(true);
                     btn.setText("");
                 }
-                Arrays.fill(game.getBoardGrid(), "-");
+                singlePlayer.setEnabled(true);
+                singlePlayer.setBackground(null);
+                game.resetVariables();
             }
         });
+
         btnPanel.add(singlePlayer);
         btnPanel.add(restart);
 
@@ -52,14 +63,18 @@ public class GUI implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(!game.isSinglePlayer()){
+            singlePlayer.setEnabled(false);
+            singlePlayer.setBackground(Color.RED);
+        }
+
         for(int i = 0; i < buttons.length; i++){
             JButton btn = buttons[i];
             if(e.getSource() == btn){
                 if(btn.getText().equals("")){
-                    btn.setText(game.changePlayer());
-                    game.getBoardGrid()[i] = game.changePlayer();
+                    btn.setText(game.getCurrentPlayer());
                     btn.setEnabled(false);
-                    game.checkForWin();
+                    game.playGame(i);
                     gameOverScreen();
                 }
             }

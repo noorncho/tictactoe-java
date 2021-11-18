@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Random;
 
 public class Game {
     private final int[][] winCombos = {{0, 1, 2},
@@ -12,15 +13,19 @@ public class Game {
     private final String[] boardGrid = new String[9];
     private int turnCounter, moveCounter;
     private String currentPlayer, winner;
-    private boolean gameOver;
+    private boolean gameOver, singlePlayer, computerTurn;
+    GUI gui;
 
-    public Game(){
+    public Game(GUI gui){
+        this.gui = gui;
         Arrays.fill(boardGrid, "-");
         turnCounter = 0;
         moveCounter = 1;
         currentPlayer = "X";
         winner = "";
         gameOver = false;
+        singlePlayer = false;
+        computerTurn = false;
     }
 
     public String changePlayer() {
@@ -28,16 +33,24 @@ public class Game {
         else return "O";
     }
 
+    public String getCurrentPlayer() {
+        return currentPlayer;
+    }
+
     public String getWinner() {
         return winner;
     }
 
-    public String[] getBoardGrid() {
-        return boardGrid;
-    }
-
     public boolean getGameOver() {
         return gameOver;
+    }
+
+    public boolean isSinglePlayer() {
+        return singlePlayer;
+    }
+
+    public void setSinglePlayer(boolean singlePlayer) {
+        this.singlePlayer = singlePlayer;
     }
 
     public void checkForWin(){
@@ -71,5 +84,40 @@ public class Game {
             currentPlayer = changePlayer();
             gameOver = false;
         }
+    }
+
+    public void singlePlayerMode(){
+        computerTurn = true;
+        while(computerTurn){
+            int computerMove = new Random().nextInt(8);
+            if(boardGrid[computerMove].equals("-")){
+                boardGrid[computerMove] = currentPlayer;
+                computerTurn = false;
+
+                gui.buttons[computerMove].setText(currentPlayer);
+                gui.buttons[computerMove].setEnabled(false);
+            }
+        }
+    }
+
+    public void playGame(int btnIndex){
+        boardGrid[btnIndex] = currentPlayer;
+        checkForWin();
+
+        if(singlePlayer && moveCounter < 9 && !gameOver){
+            singlePlayerMode();
+            checkForWin();
+        }
+    }
+
+    public void resetVariables(){
+        Arrays.fill(boardGrid, "-");
+        turnCounter = 0;
+        moveCounter = 1;
+        currentPlayer = "X";
+        winner = "";
+        gameOver = false;
+        singlePlayer = false;
+        computerTurn = false;
     }
 }
