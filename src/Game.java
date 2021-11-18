@@ -12,6 +12,7 @@ public class Game {
             {2, 4, 6}};
     private final String[] boardGrid = new String[9];
     private int turnCounter, moveCounter;
+    private int xScore, oScore;
     private String currentPlayer, winner;
     private boolean gameOver, singlePlayer, computerTurn;
     GUI gui;
@@ -21,6 +22,7 @@ public class Game {
         Arrays.fill(boardGrid, "-");
         turnCounter = 0;
         moveCounter = 1;
+        xScore = oScore = 0;
         currentPlayer = "X";
         winner = "";
         gameOver = false;
@@ -43,6 +45,14 @@ public class Game {
 
     public boolean getGameOver() {
         return gameOver;
+    }
+
+    public int getxScore() {
+        return xScore;
+    }
+
+    public int getoScore() {
+        return oScore;
     }
 
     public boolean isSinglePlayer() {
@@ -108,6 +118,11 @@ public class Game {
             singlePlayerMode();
             checkForWin();
         }
+    }
+
+    public void increaseScore(){
+        if(winner.equals("X")) xScore++;
+        if(winner.equals("O")) oScore++;
     }
 
     public void resetVariables(){
