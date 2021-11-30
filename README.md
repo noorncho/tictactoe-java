@@ -1,4 +1,5 @@
-#TicTacToe 
+![Tic-Tac-Toe Java](./tictactoe.png)
+#TicTacToe using Java
 This is a GUI based tic-tac-toe game.
 
 ## General Info
